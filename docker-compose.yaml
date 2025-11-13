@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  catalog:
+    build: ./catalog
+    ports:
+      - "4001:4001"
+
+  order:
+    build: ./order
+    ports:
+      - "4002:4002"
+    environment:
+      - CATALOG_URL=http://catalog:4001
+    depends_on:
+      - catalog
+
+  front:
+    build: ./front
+    ports:
+      - "4000:4000"
+    environment:
+      - CATALOG_URL=http://catalog:4001
+      - ORDER_URL=http://order:4002
+    depends_on:
+      - catalog
+      - order
