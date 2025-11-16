@@ -12,9 +12,8 @@ It consists of three REST-based services:
 All services communicate using HTTP REST calls and can run independently in Docker containers.
 
 To Start the project you need to open the directory and then run the following commands :
-  1-docker comopse build  
-    this creates the images through the docker-compose.yaml.
+
+  1-docker comopse build  : creates the images through the docker-compose.yaml.
   
-  2-docker compose up 
-    this starts each server in a container on the mapped ports in docker-compose.yaml.
+  2-docker compose up : starts each server in a container on the mapped ports in docker-compose.yaml.
     
