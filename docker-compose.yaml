@@ -1,27 +1,77 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  catalog:
-    build: ./catalog
+  # -------- Catalog Replicas --------
+  catalog1:
+    build: ./catalog1
     ports:
       - "4001:4001"
+    environment:
+      - PORT=4001
+      - IS_PRIMARY=true
+      - PEER_URL=http://catalog2:4003
+      - FRONTEND_URL=http://front:4000
+    volumes:
+      - catalog1_db:/app/db
 
-  order:
-    build: ./order
+  catalog2:
+    build: ./catalog2
+    ports:
+      - "4003:4003"
+    environment:
+      - PORT=4003
+      - IS_PRIMARY=false
+      - PEER_URL=http://catalog1:4001
+      - FRONTEND_URL=http://front:4000
+    volumes:
+      - catalog2_db:/app/db
+
+  # -------- Order Replicas --------
+  order1:
+    build: ./order1
     ports:
       - "4002:4002"
     environment:
-      - CATALOG_URL=http://catalog:4001
+      - PORT=4002
+      - CATALOG_PRIMARY_URL=http://catalog1:4001
     depends_on:
-      - catalog
+      - catalog1
+      - catalog2
+    volumes:
+      - order1_db:/app/db
 
+  order2:
+    build: ./order2
+    ports:
+      - "4004:4004"
+    environment:
+      - PORT=4004
+      - CATALOG_PRIMARY_URL=http://catalog1:4001
+    depends_on:
+      - catalog1
+      - catalog2
+    volumes:
+      - order2_db:/app/db
+
+  # -------- Front (API Gateway) --------
   front:
     build: ./front
     ports:
       - "4000:4000"
     environment:
-      - CATALOG_URL=http://catalog:4001
-      - ORDER_URL=http://order:4002
+      - PORT=4000
+      - CATALOG_REPLICAS=http://catalog1:4001,http://catalog2:4003
+      - ORDER_REPLICAS=http://order1:4002,http://order2:4004
+      - CACHE_TTL_MS=30000
+      - CACHE_MAX=200
     depends_on:
-      - catalog
-      - order
+      - catalog1
+      - catalog2
+      - order1
+      - order2
+
+volumes:
+  catalog1_db:
+  catalog2_db:
+  order1_db:
+  order2_db:
