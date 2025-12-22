@@ -48,13 +48,13 @@ const cache = new Map(); // key -> { value, expiresAt }
 function cacheGet(key) {
   const entry = cache.get(key);
   if (!entry) return null;
-  if (Date.now() > entry.expiresAt) {
+  if (Date.now() > entry.expiresAt) { // if the value is expired then deleted 
     cache.delete(key);
     return null;
   }
   cache.delete(key);
   cache.set(key, entry);
-  return entry.value;
+  return entry.value;    // returns the value 
 }
 
 function cacheSet(key, value) {
