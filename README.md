@@ -1,4 +1,4 @@
-# 📚 Distributed Online Store (DOS) – Part 2
+# 📚 Bazar.com
 
 > **Replication, Consistency, Load Balancing & Caching**
 
@@ -161,7 +161,7 @@ This approach eliminates cache coherence issues while maintaining excellent cach
 ### Prerequisites
 
 - Docker and Docker Compose installed
-- Ports 3000-3005 available on your system
+- Ports 4000-4004 available on your system
 
 ### Deployment
 
@@ -209,13 +209,6 @@ The system has been evaluated across multiple dimensions:
 - **Strong Consistency**: Validated that no stale reads occur after write operations
 - **Invalidation Latency**: Measured time between write and cache invalidation
 - **Replication Lag**: Monitored synchronization delay between primary and backups
-
-### Observations
-
-- Cache hit rates exceed 80% for read-heavy workloads
-- Round-robin achieves ±5% deviation in request distribution
-- Cache invalidation completes within milliseconds, maintaining consistency
-- System maintains availability even with single replica failures
 
 ---
 
