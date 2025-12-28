@@ -10,10 +10,14 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 
-const PORT = 4003;
-const IS_PRIMARY = false;
-const PEER_URL = "http://localhost:4001";
-const FRONTEND_URL = "http://localhost:4000";
+const PORT = Number(process.env.PORT || 4003);
+
+const IS_PRIMARY =
+    String(process.env.IS_PRIMARY || "false").toLowerCase() === "true";
+
+const PEER_URL = process.env.PEER_URL || "http://localhost:4001";
+
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:4000";
 
 const DB_PATH = "./db/catalog.db";
 

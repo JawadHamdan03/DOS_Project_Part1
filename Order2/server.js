@@ -6,9 +6,8 @@ const app = express();
 app.use(express.json());
 
 
-const PORT = 4004;
-
-const CATALOG_PRIMARY_URL = "http://localhost:4001";
+const PORT = Number(process.env.PORT || 4004);
+const CATALOG_PRIMARY_URL = process.env.CATALOG_PRIMARY_URL || "http://localhost:4001";
 
 const DB_PATH = "./db/orders.db";
 

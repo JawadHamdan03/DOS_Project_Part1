@@ -20,18 +20,6 @@ db.exec(`
   );
 `);
 
-const insert = db.prepare(`
-  INSERT INTO orders (item_id, title, price, status, created_at)
-  VALUES (@item_id, @title, @price, @status, datetime('now'))
-`);
-
-const sampleOrders = [
-  { item_id: 1, title: 'How to get a good grade in DOS in 40 minutes a day', price: 40, status: 'SUCCESS' },
-  { item_id: 4, title: 'Cooking for the Impatient Undergrad', price: 30, status: 'FAILED' }
-];
-
-const trx = db.transaction(rows => rows.forEach(r => insert.run(r)));
-trx(sampleOrders);
 
 console.log('✅ orders.db created and seeded successfully.');
 db.close();
